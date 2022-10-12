@@ -1,3 +1,4 @@
+# doesn't work
 if __name__ == '__main__':
     a = input()
     parentheses = 0
