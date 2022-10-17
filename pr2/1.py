@@ -1,7 +1,10 @@
-if __name__ == '__main__' :
+if __name__ == '__main__':
     a = input()
-    if a == a[::-1]:
-        print(True)
-    else:
-        print(False)
-print('str'[::-1])
+    new_a = ''
+    max = ''
+    for x in range(len(a)):
+        if a[x] in new_a:
+            new_a = ''
+        new_a += a[x]
+        if len(new_a) > len(max): max = new_a
+    print(max) 

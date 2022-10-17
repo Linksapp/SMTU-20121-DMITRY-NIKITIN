@@ -1,6 +1,3 @@
-class Mylist(list):
-    pass
-a = Mylist()
-print(type(a))
-print(type(a) == list)
-print(isinstance(a, list))
+from random import randint
+a = [randint(1, 100) for x in range(1, 11)]
+print(a)
