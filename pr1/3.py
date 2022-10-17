@@ -2,7 +2,7 @@ if __name__ == '__main__':
     a, b = input(), int(input())
     word = ''
     brg = 2*(b - 1)
-    if 1 < b < 3:
+    if b == 1:
         print(a)
     elif b < 0:
         print()
