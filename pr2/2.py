@@ -2,7 +2,8 @@ if __name__ == '__main__':
     a = int(input())
     if -2**7 <= a <= 2**7 - 1:
         if a % 10 == 0:
-            a //= 10
+            while a % 10 == 0:
+                a //= 10
         if a > 0:
             a = str(a)[::-1]
         elif a < 0:
