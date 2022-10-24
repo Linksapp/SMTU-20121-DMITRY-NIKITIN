@@ -3,8 +3,10 @@ if __name__ == '__main__':
     new_a = ''
     max = ''
     for x in range(len(a)):
-        if a[x] in new_a:
-            new_a = ''
-        new_a += a[x]
-        if len(new_a) > len(max): max = new_a
-    print(max) 
+        for y in range(x, len(a)):
+            if a[y] in new_a:
+                new_a = ''
+                break
+            new_a += a[y]
+            if len(new_a) > len(max): max = new_a
+    print(max)
