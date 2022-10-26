@@ -9,4 +9,5 @@ if __name__ == '__main__':
                 break
             new_a += a[y]
             if len(new_a) > len(max): max = new_a
+            
     print(max)
