@@ -1,42 +1,56 @@
-# doesn't work
 if __name__ == '__main__':
-    a = input()
-    parentheses = 0
-    curly_br = 0
-    square_br = 0
-    subsequence_start = 0
-    subsequence_end = 0
-    word = ''
-    sup_word = ''
-    sum = parentheses + curly_br + square_br
-    sub_sum = sum
-    def check(a):
-        global parentheses, curly_br, square_br
-        if a == '(':
-            parentheses += 1
-        elif a == '{':
-            curly_br += 1
-        elif a == '[':
-            square_br += 1
-        elif a == ')':
-            parentheses -= 1
-        elif a == '}':
-            curly_br -= 1
-        elif a == ']': 
-            square_br -=1 
-        
-    if len(a) % 2 == 0 or a[0] != (')' or ']' or '}') or a[-1] != '(' or '[' or '{':
-        for x in range(len(a)):
-            if a[x] == ')' or a[x] == ']' or a[x] == '}':
-                if (a[x-1] == '(' or a[x-1] =='[' or a[x-1] =='{') and ((a[x] != chr(ord(a[x-1]) + 2)) or (a[x] != chr(ord(a[x-1]) + 1))):
+    brackets = input()
+    right_sequence = ['']*len(brackets)
+    buffer = ''
+    indexes = ''
+    step = 1
+    last = 0
+    result = True
+    max_right_sequence = ''
+    if len(brackets) % 2 == 0 and brackets[0] != ']' and brackets[0] != ')' and brackets[0] != '}':
+        buffer += brackets[0]
+        for x in range(1, len(brackets)):
+            if brackets[x] == '(' or brackets[x] == '[' or brackets[x] == '{':
+                buffer += brackets[x]
+            else:
+                if buffer == '':
+                    result = False
+                    last = x
+                    break
+                elif (buffer[-1] == chr(ord(brackets[x]) - 2)) or (buffer[-1] == chr(ord(brackets[x]) - 1)):                    
+                    right_sequence[brackets.rindex(buffer[-1], 0, x)] = buffer[-1]  
+                    right_sequence[x] = brackets[x]
+                    buffer = buffer[:-1]
+                else:
+                    buffer = ''
+                    result = False
+                    last = x
+                    break
+    else: result = False
+
+    if not result:
+        for j in range(last, len(brackets)):
+            if len(right_sequence) > len(max_right_sequence):
+                max_right_sequence = ''.join(right_sequence)
+            if brackets[j] == '(' or brackets[j] == '[' or brackets[j] == '{':
+                buffer += brackets[j]
+            else:
+                if buffer == '':
                     continue
-            check(a[x])
-            # print(parentheses + curly_br + square_br)
-            word += a[x]
-            print(word)
-        if (parentheses + curly_br + square_br) == 0:
-            print(True)
-        else:
-            print(False)
-    else: print(False)
+                elif (buffer[-1] == chr(ord(brackets[j]) - 2)) or (buffer[-1] == chr(ord(brackets[j]) - 1)):
+                    right_sequence[brackets.rindex(buffer[-1], 0, j)] = buffer[-1]  
+                    intermediate = list(brackets)
+                    intermediate[brackets.rindex(buffer[-1], 0, j)] = '.'
+                    brackets = ''.join(intermediate)
+                    right_sequence[j] = brackets[j]
+                    buffer = buffer[:-1]
+                else:
+                    buffer = ''
+        if max_right_sequence != '': print(max_right_sequence)
+        else: print(result)    
+    else:
+        print(result)       
     
+
+
+
