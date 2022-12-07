@@ -29,6 +29,7 @@ if __name__ == '__main__':
     else: result = False
 
     if not result:
+
         for j in range(last, len(brackets)):
             if len(right_sequence) > len(max_right_sequence):
                 max_right_sequence = ''.join(right_sequence)
@@ -49,7 +50,10 @@ if __name__ == '__main__':
         if max_right_sequence != '': print(max_right_sequence)
         else: print(result)    
     else:
-        print(result)       
+        if len(buffer) == 0:
+            print(True)
+        else:
+            print(False)       
     
 
 
