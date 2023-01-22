@@ -24,8 +24,6 @@ def output(seq: list, signs: list, goal: int) -> str:
     equation += f'= {goal}'
     return equation  # возвращает уравнение
 
-
-
 if __name__ =='__main__':
     f = open('file.txt', 'r+')
     input_data = f.readline().split()
