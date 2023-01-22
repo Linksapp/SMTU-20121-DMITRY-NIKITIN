@@ -1,36 +1,38 @@
-def num_tree(seq: list, goal: int) -> list: 
+def sign_tree(seq: list, goal: int) -> list:  # возвращает порядок знаков или пустой список
     global signs
-    if len(seq) == 1:
-        if seq[0] == goal:
+    if len(seq) == 1:  
+        if seq[0] == goal: 
             return True
         else: return False
-    for_plus = seq.copy()
+    for_plus = seq.copy()  # делает копию переданной последовательности
     for_minus = seq.copy()
-    for_plus[0] = for_plus[0] + for_plus[1]
-    for_plus.pop(1)
-    for_minus[0] = for_minus[0] - for_minus[1]
-    for_minus.pop(1)
-    if num_tree(for_plus, goal):
-        signs += ['+']
+    for_plus[1] = for_plus[0] + for_plus[1]  # складывает первые два элемента
+    for_minus[1] = for_minus[0] - for_minus[1]  # вычитает первые два элемента
+    if sign_tree(for_plus[1:], goal):
+        signs += ['+']  # если выполнено условие, то добавляет '+' в список signs
         return signs
-    if num_tree(for_minus, goal):
-        signs += ['-']
+    if sign_tree(for_minus[1:], goal):
+        signs += ['-']  # если выполнено условие, то добавляет '-' в список signs
         return signs
 
 def output(seq: list, signs: list, goal: int) -> str:
-    if not signs:
+    if not signs:  # если был передан пустой список, то возвращает 'no solution'
         return 'no solution'
-    equation = f'{seq[0]}'
+    equation = f'{seq[0]} '
     for index in range(1, len(seq)):
-        equation += ' ' + str(signs[index-1]) + ' ' + str(seq[index])
-    equation += f' = {goal}'
-    return equation
+        equation += f'{str(signs[index-1])} {str(seq[index])} '
+    equation += f'= {goal}'
+    return equation  # возвращает уравнение
+
+
 
 if __name__ =='__main__':
-    input_data = input().split()
+    f = open('file.txt', 'r+')
+    input_data = f.readline().split()
     N = int(input_data.pop(0))
     S = int(input_data.pop(-1))
     signs = []
     sequence = [int(x) for x in input_data]
-    print(output(sequence, num_tree(sequence, S), S))
+    f.write('\n' + output(sequence, sign_tree(sequence, S), S))
+    f.close()
     
