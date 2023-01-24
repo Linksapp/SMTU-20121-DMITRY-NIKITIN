@@ -30,7 +30,7 @@ if __name__ == '__main__':
 
     if not result:
         for j in range(last, len(brackets)):
-            if len(right_sequence) > len(max_right_sequence):
+            if len(''.join(right_sequence)) > len(''.join(max_right_sequence)):
                 max_right_sequence = ''.join(right_sequence)
             if brackets[j] == '(' or brackets[j] == '[' or brackets[j] == '{':
                 buffer += brackets[j]
@@ -46,7 +46,8 @@ if __name__ == '__main__':
                     buffer = buffer[:-1]
                 else:
                     buffer = ''
-            if len(right_sequence) > len(max_right_sequence):
+                    right_sequence = ['']*len(brackets)
+            if len(''.join(right_sequence)) > len(''.join(max_right_sequence)):
                 max_right_sequence = ''.join(right_sequence)
         if max_right_sequence != '': print(max_right_sequence)
         else: print(result)    
