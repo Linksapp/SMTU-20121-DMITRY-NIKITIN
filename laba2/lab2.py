@@ -17,8 +17,8 @@ def chess(xstart: int, ystart: int, board: list, fig_num: int, standing: list) -
 
     if fig_num == 0:
         if firstboard is None: firstboard = standing
-        standing = str(standing)  # перевод list в str, тк write принимает за аргумент только str
-        output.write(standing + '\n')
+        for _ in [*standing]: output.write(str(_) + ' ') # распаковываем standing и каждый элемент переводим в строку
+        output.write('\n')
     else: 
         for x in range(xstart, len(board)): # xstart нужен, чтобы мы не проходились по уже пройденным клеткам
             for y in range(len(board)):
