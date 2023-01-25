@@ -1,44 +1,53 @@
-from copy import deepcopy
+from time import time
 
 def main():
-    input_data = open('laba2/input_data.txt')
-    file = list(input_data)
-    N, L, K = file[0].split()
-    standing_figure = [tuple([int(file[x].split()[0]), int(file[x].split()[1])]) for x in range(1, int(K) + 1)]
-    count = 0
-    b = chess(putting_given_figure(int(N), standing_figure), int(L))
-    print(b)
-    for x in b:
-        print(x)
-        # break
-        count += 1
-    print(count)
+    atime = time()  # время начала работы функции chess
+    chess(0, 0, putting_given_figure(int(N), standing_figure), int(L), standing_figure)
+    btime = time() - atime  # время окончания работы функции chess
+    output.seek(0)  # воозвращаемся к началу файла, чтобы read() считала содержимое с начала файла
+    if output.read() != '': # проверка на отсутствие решений
+        output.seek(0) # воозвращаемся к началу файла, это необходимо, что бы len(output.readlines()) вывелось количество элементов
+        print(f'Количество решений: {len(output.readlines())}')
+        for _ in putting_given_figure(int(N), standing_figure + firstboard): print(*_)
+        print(f'Время работы {btime}')
+    else: print('no solution'), output.write('no solution')
+    
+def chess(xstart: int, ystart: int, board: list, fig_num: int, standing: list) -> None:
+    global firstboard   
 
-def figure_searcher(board):
-    figures = []
-    for x in range(len(board)):
-        for y in range(len(board)):
-            if board[x][y] == '#':
-                figures.append((x, y))
-    return figures
+    if fig_num == 0:
+        if firstboard is None: firstboard = standing
+        standing = str(standing)  # перевод list в str, тк write принимает за аргумент только str
+        output.write(standing + '\n')
+    else: 
+        for x in range(xstart, len(board)): # xstart нужен, чтобы мы не проходились по уже пройденным клеткам
+            for y in range(len(board)):
+                if x == xstart and y < ystart:  # эта проверка служит для того же
+                    continue
+                if board[x][y] == 0 and under_attack(x, y, board):  # проверка является ли клетка 0 и находится ли она под ударом
+                    board[x][y] = '#' # ставим фигуру
+                    chess(x, y, board, fig_num - 1, standing + [tuple([x, y])])
+                    '''передаём координаты, оставшееся количество фигур, 
+                       которые надо поставить и уже стоящие фигуры'''
+                    board[x][y] = 0  # убираем фигуру
+ 
 
-def chess(board, L):
-    variants = []
-    if L == 0:
-        return figure_searcher(board)
-    for x in range(len(board)):
-        for y in range(len(board)):
-            if board[x][y] == 0:
-                variants.append((chess(put_figure(x, y, deepcopy(board)), L - 1)))
-    return variants
-                
-def put_figure(x, y, board_p):
-    board_p[x][y] = '#'
-    for cell in attacked_cell(x, y, len(board_p)):
-        board_p[cell[0]][cell[1]] = '*'
-    return board_p
+def under_attack(x: int, y: int, board: list) -> bool: 
+    '''проверяем находится ли клетка под ударом, если находится возвращаем False '''
+    for num in range(1, 3):
+        if (x - num) >= 0 and (y - num) >= 0 and board[x - num][y - num] == '#':
+            return False
+        if (x + num) < len(board) and (y - num) >= 0 and board[x + num][y - num] == '#':
+            return False
+        if (x - num) >= 0 and (y + num) < len(board) and board[x - num][y + num] == '#':
+            return False
+        if (x + num) < len(board) and (y + num) < len(board) and board[x + num][y + num] == '#':
+            return False
+    return True
 
 def attacked_cell(x: int, y: int, size: int) -> list:
+    '''Делает то же самое, что и так under_attack, но возвращает список, 
+    чтобы можно было передать в функцию putting_given_figure'''
     attacked = []
     for num in range(1, 3):
         if (x - num) >= 0 and (y - num) >= 0:
@@ -51,15 +60,22 @@ def attacked_cell(x: int, y: int, size: int) -> list:
             attacked.append((x + num, y + num))
     return attacked
 
-
-
 def putting_given_figure(size: int, coordinates: list) -> list:
-    board = [size * [0] for x in range(size)]
+    '''Расставляет заданные фигуры'''
+    board = [int(N) * [0] for x in range(int(N))]   # создаёт матрицу N * N нулей
     for x, y in coordinates:
-        board[x][y] = '#'
+        board[x][y] = '#' # ставит фигуру
         for cell in attacked_cell(x, y, size):
-            board[cell[0]][cell[1]] = '*'
+            board[cell[0]][cell[1]] = '*'   # показывает атакуемую клетку
     return board
 
+
 if __name__ == '__main__':
+    input_data = open('laba2/input.txt')
+    output = open('laba2/output.txt', 'w+')
+    file = list(input_data)
+    firstboard = None
+    N, L, K = file[0].split()
+    standing_figure = [tuple([int(file[x].split()[0]), int(file[x].split()[1])]) for x in range(1, int(K) + 1)]
     main()
+    
