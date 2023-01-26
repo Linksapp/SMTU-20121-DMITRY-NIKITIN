@@ -78,4 +78,6 @@ if __name__ == '__main__':
     N, L, K = file[0].split()
     standing_figure = [tuple([int(file[x].split()[0]), int(file[x].split()[1])]) for x in range(1, int(K) + 1)]
     main()
+    input_data.close()
+    output.close()
     
