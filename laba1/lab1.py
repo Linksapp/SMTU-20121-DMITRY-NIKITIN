@@ -19,13 +19,14 @@ def output(seq: list, signs: list, goal: int) -> str:
     if not signs:  # если был передан пустой список, то возвращает 'no solution'
         return 'no solution'
     equation = f'{seq[0]} '
+    signs.reverse() # необходимо развернуть, тк знаки добавлялись в конец списка
     for index in range(1, len(seq)):
         equation += f'{str(signs[index-1])} {str(seq[index])} '
     equation += f'= {goal}'
     return equation  # возвращает уравнение
 
 if __name__ =='__main__':
-    f = open('file.txt', 'r+')
+    f = open('laba1/file.txt', 'r+')
     input_data = f.readline().split()
     N = int(input_data.pop(0))
     S = int(input_data.pop(-1))
