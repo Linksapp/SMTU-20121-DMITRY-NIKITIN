@@ -8,7 +8,7 @@ def main():
     if output.read() != '': # проверка на отсутствие решений
         output.seek(0) # воозвращаемся к началу файла, это необходимо, что бы len(output.readlines()) вывелось количество элементов
         print(f'Количество решений: {len(output.readlines())}')
-        for _ in putting_given_figure(int(N), standing_figure + firstboard): print(*_)
+        for _ in putting_given_figure(int(N), firstboard): print(*_)
         print(f'Время работы {btime}')
     else: print('no solution'), output.write('no solution')
     
@@ -46,7 +46,7 @@ def under_attack(x: int, y: int, board: list) -> bool:
     return True
 
 def attacked_cell(x: int, y: int, size: int) -> list:
-    '''Делает то же самое, что и так under_attack, но возвращает список, 
+    '''Делает то же самое, что и under_attack, но возвращает список, 
     чтобы можно было передать в функцию putting_given_figure'''
     attacked = []
     for num in range(1, 3):
