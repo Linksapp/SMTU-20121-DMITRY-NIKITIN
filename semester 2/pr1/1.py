@@ -41,7 +41,7 @@ class DictBox(Box):
     def count(self):
         return len(self.elements)
 
-def repack_boxes(*args: Item):
+def repack_boxes(*args):
     elements = []
     for box in args:
         elements.extend(box.empty())
@@ -49,13 +49,10 @@ def repack_boxes(*args: Item):
     for box in args:
         box.add(elements[:int_amount])
         elements = elements[int_amount:]
-    
     for box in args:
         if elements == []:
             break
         box.add(elements.pop())
-    print(len(args[2].elements))
         
-    
 
 repack_boxes(ListBox(20), ListBox(9), DictBox(6))
