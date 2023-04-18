@@ -54,4 +54,5 @@ def repack_boxes(*args):
             break
         box.add(elements.pop())
         
+        
 repack_boxes(ListBox(20), ListBox(9), DictBox(6))
