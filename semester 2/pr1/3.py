@@ -41,14 +41,14 @@ class Playlist:
                 else:
                     self.musiciandict[f'{singer.name}'] += 1
     def remove(self, song_name: str) -> None:
-        # try:
+        try:
             for singer in self.songdict[song_name].musician: 
                 self.musiciandict[f'{singer.name}'] -= 1
                 if self.musiciandict[f'{singer.name}'] == 0:
                     del self.musiciandict[f'{singer.name}']
             del self.songdict[song_name]
-        # except:
-        #     print(self.songdict[song_name].musician)
+        except:
+            print(f'Трек {song_name} не найден')
         
     def add_album(self, album: Album) -> None:
         for song in album.songlist:
@@ -77,3 +77,4 @@ print('; '.join(morning.songdict.keys()))
 morning.remove('J Song')
 print(', '.join(morning.musiciandict.keys()))
 print('; '.join(morning.songdict.keys()))
+morning.remove('Every Time')
