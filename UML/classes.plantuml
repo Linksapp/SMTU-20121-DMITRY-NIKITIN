@@ -1,0 +1,79 @@
+@startuml CW
+class ctk.CTk{}
+
+class Input_window{ 
+    board_size_label : ctk.CTkLabel 
+    board_size_entry : ctk.CTkEntry
+    number_of_figures_label : ctk.CTkLabel
+    number_of_figures_entry : ctk.CTkEntry
+    get_button : ctk.CTkButton
+    board_window : Pygame_board_window
+
+    _create_pygame_window() : None
+    _do_size_validation(new_value: str) : bool
+    _do_figures_validation(new_value: str) : bool
+}
+
+class Board{
+    board_size : int
+    board_grid : list
+
+    fill_board_grid(surface: pygame.Surface, grid: list[str], size: int) : None
+    attacked_cell(x: int, y: int, board_size: int) : list[tuple[int, int]]
+}
+
+class Pygame_window{
+    board_size : int
+    number_of_figures : int
+    scr : pygame.display
+    board_surface : pygame.Surface
+    button_surface : pygame.Surface
+    continue_button : Pygame_button
+    board_maker : Board
+
+    blit_objects(text: str, grid: list) : None
+    {static} no_solution_window() : None
+}
+
+class Pygame_button{
+    width : int
+    height : int
+    font : pygame.font
+
+    make_button(text: str, text_size: int) : pygame.Surface
+    get_clicked(action: Callable=None, *args: list[int, int, list[tuple[int, int]]]) : None
+}
+
+
+class Pygame_board_window{
+    board_size: int
+    number_of_figures: int
+    coords : list
+    all_attacked : dict
+    output_window : Pygame_output_window
+    attacked : list[tuple[int, int]]
+
+    _create_output_window(size:int, number_of_figures:int, coords: list[tuple[int, int]]) : None
+    make_board() : None
+}
+
+class Pygame_output_window{
+    board_size: int
+    number_of_figures: int
+    coords : list[tuple[int, int]
+    firstboard : None
+
+    display_first_solution() : None
+    solution(xstart: int, ystart: int, board: list, fig_num: int, standing: list, first: bool) : None
+    under_attack(x: int, y: int, board: list) : bool
+    putting_given_figure(board, size: int, coordinates: list) : list
+}
+
+Input_window --|> ctk.CTk
+Input_window --> Pygame_board_window
+Pygame_window --> Board
+Pygame_window --> Pygame_button
+Pygame_board_window --|> Pygame_window
+Pygame_board_window --> Pygame_output_window
+Pygame_output_window --|> Pygame_window
+@enduml
