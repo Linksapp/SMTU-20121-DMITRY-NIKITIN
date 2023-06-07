@@ -4,14 +4,11 @@ from abc import ABC, abstractmethod
 class Figure(ABC):
     @abstractmethod
     def draw_figure(self):
-        c = tk.Canvas(self)
         ...
-        c.pack()
         
 
     @abstractmethod
     def get_figure_area(self):
-        self.window = tk.Toplevel(self)
         ...
 
         
