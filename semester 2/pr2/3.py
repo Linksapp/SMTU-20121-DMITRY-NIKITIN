@@ -1,17 +1,18 @@
 import tkinter as tk
 from abc import ABC, abstractmethod
 
-class Figure(tk.Toplevel, ABC):
-    def __init__(self):
-        super().__init__()
+class Figure(ABC):
     @abstractmethod
     def draw_figure(self):
         c = tk.Canvas(self)
+        ...
         c.pack()
+        
 
     @abstractmethod
     def get_figure_area(self):
         self.window = tk.Toplevel(self)
+        ...
 
         
 
@@ -35,50 +36,50 @@ class MainWindow(tk.Tk):
     def rectangle_window(self):
         self.rect = Input_window('Прямоугольник')
 
-class Circle(Figure):
+class Circle(tk.Toplevel, Figure):
     def __init__(self, radius):
         super().__init__()
         self.radius = radius
 
-    
     def draw_figure(self):
         c = tk.Canvas(self)
-        c.pack()
-        c.create_oval(5, 5, 5+2*self.radius, 5+2*self.radius, width=2)
+        c.create_oval(5, 5, 50+2*self.radius, 50+2*self.radius, width=2)
         self.button = tk.Button(self, text='Узнать площадь фигуры', command=self.get_figure_area).pack()
+        c.pack()
 
     def get_figure_area(self):
         self.window = tk.Toplevel(self)
         self.label = tk.Label(self.window, text=f'Площадь фигуры - {3.14*(self.radius**2)}').grid(row=0)
         self.button = tk.Button(self.window, text='OK', command=exit).grid(row=1)
 
-class Square(Figure):
+class Square(tk.Toplevel, Figure):
     def __init__(self, side):
         super().__init__()
         self.side = side
 
     def draw_figure(self):
         c = tk.Canvas(self)
-        c.pack()
-        c.create_rectangle(5, 5, 5+self.side, 5+self.side)
+        c.create_rectangle(5, 5, 50+self.side, 50+self.side)
         self.button = tk.Button(self, text='Узнать площадь фигуры', command=self.get_figure_area).pack()
+        c.pack()
 
     def get_figure_area(self):
         self.window = tk.Toplevel(self)
         self.label = tk.Label(self.window, text=f'Площадь фигуры - {self.side**2}').grid(row=0)    
         self.button = tk.Button(self.window, text='OK', command=exit).grid(row=1)
 
-class Rectangle(Figure):
+class Rectangle(tk.Toplevel, Figure):
     def __init__(self, x, y):
         super().__init__()
         self.x = x
         self.y = y
 
+
     def draw_figure(self):
         canvas = tk.Canvas(self)
-        canvas.pack()
-        canvas.create_rectangle(5, 5, 5+self.x, self.y)
+        canvas.create_rectangle(5, 5, 50+self.x, 50+self.y)
         self.button = tk.Button(self, text='Узнать площадь фигуры', command=self.get_figure_area).pack()
+        canvas.pack()
     
     def get_figure_area(self):
         self.window = tk.Toplevel(self)
@@ -110,6 +111,7 @@ class Input_window(tk.Toplevel):
         if self.rad > 0:
             fig = Circle(self.rad)
             fig.draw_figure()
+            
 
     def make_square(self):
         self.side = int(self.entry.get())
